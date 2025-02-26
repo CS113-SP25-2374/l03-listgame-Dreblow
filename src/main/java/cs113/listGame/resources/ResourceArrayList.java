@@ -12,7 +12,7 @@ public class ResourceArrayList implements ResourceList {
 
     @Override
     public void add(ResourceObject resource) {
-        if (contains(resource)) { return; } // gotcha moment, don't add it twice!
+        if (resourceObjects.contains(resource)) { return; } // gotcha moment, don't add it twice!
         resourceObjects.add(resource);
     }
 
@@ -23,12 +23,10 @@ public class ResourceArrayList implements ResourceList {
 
     @Override
     public void truncate(ResourceObject resource) {
-        int indexOfResource = resourceObjects.indexOf(resource);
-
-        // If the element was found, remove all elements from that index onward
-        if (indexOfResource != -1) {
-            for (int i = resourceObjects.size() - 1; i >= indexOfResource; i--) {
-                resourceObjects.remove(i);
+        int index = resourceObjects.indexOf(resource);
+        if (index != -1) {
+            while (resourceObjects.size() > index) {
+                resourceObjects.remove(index); // Always remove from `index`
             }
         }
     }
@@ -41,12 +39,5 @@ public class ResourceArrayList implements ResourceList {
                 leader = resourceObjects.get(i);
             }
         }
-    }
-
-    private boolean contains(ResourceObject resource) {
-        for (int i = 0; i < resourceObjects.length(); i++) {
-            if (resourceObjects.get(i) == resource) return true;
-        }
-        return false;
     }
 }

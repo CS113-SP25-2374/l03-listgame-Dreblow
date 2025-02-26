@@ -10,8 +10,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
 public class EnemyArrayList extends EnemyObject {
-    private ArrayListDAD<Behavior> enemyBehaviors;
-    Random random = new Random();
+    private final ArrayListDAD<Behavior> enemyBehaviors;
+    private final Random random = new Random();
 
     public EnemyArrayList(ImageView imageView) {
          super(imageView); 
@@ -45,6 +45,9 @@ public class EnemyArrayList extends EnemyObject {
                 enemyBehaviors.set(i, enemyBehaviors.get(i + 1));
             }
         }
+
+        // Remove last element (to prevent duplication)
+        enemyBehaviors.remove(enemyBehaviors.size() - 1);
 
         return behavior;
     }

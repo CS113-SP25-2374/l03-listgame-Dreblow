@@ -1,29 +1,43 @@
 package cs113.listGame.resources;
 
+import cs113.listGame.ListClasses.LinkedListDAD;
 import cs113.listGame.gamecore.GameObject;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class ResourceLinkedList implements ResourceList {
+        private final LinkedListDAD<ResourceObject> resourceObjects;
+
+    public ResourceLinkedList() {
+        resourceObjects = new LinkedListDAD<>();
+    }
 
     @Override
     public void add(ResourceObject resource) {
-
+        if (resourceObjects.contains(resource)) { return; } // gotcha moment, don't add it twice!
+        resourceObjects.add(resource);
     }
 
     @Override
     public void remove(ResourceObject resource) {
-
+        resourceObjects.remove(resource);
     }
 
     @Override
     public void truncate(ResourceObject resource) {
-
+        int index = resourceObjects.indexOf(resource);
+        if (index != -1) {
+            while (resourceObjects.size() > index) {
+                resourceObjects.remove(index); // Always remove from `index`
+            }
+        }
     }
 
     @Override
     public void follow(GameObject leader) {
-
+        for (int i = 0; i < resourceObjects.length(); i++) {
+            if (resourceObjects.get(i) != null) {
+                resourceObjects.get(i).moveTowards(leader.getEchoCenter());
+                leader = resourceObjects.get(i);
+            }
+        }
     }
 }
